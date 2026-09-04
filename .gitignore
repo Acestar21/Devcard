@@ -1,0 +1,20 @@
+# Environment
+.env
+backend/.env
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+*.egg-info/
+
+# Node (frontend, once you get there)
+node_modules/
+.next/
+
+# Editor/OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
