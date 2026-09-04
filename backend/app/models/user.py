@@ -20,6 +20,6 @@ class User(SQLModel, table=True):
     # Encrypted (Fernet) GitHub OAuth access token.
     # NEVER return this field in any API response schema.
     encrypted_github_token: str
- 
+    encrypted_refresh_token: Optional[str] = None
     created_at: datetime = Field(default_factory=datetime.utcnow)
     updated_at: datetime = Field(default_factory=datetime.utcnow)

@@ -1,0 +1,14 @@
+alembic
+cryptography 
+fastapi 
+httpx 
+psycopg          
+psycopg-binary    
+pycparser       
+pydantic        
+pydantic_core   
+pydantic-settings 
+python-dotenv
+sqlmodel
+SQLAlchemy 
+uvicorn
