@@ -1,26 +1,26 @@
-import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
+import './globals.css';
+import { Inter } from 'next/font/google';
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
+const inter = Inter({ subsets: ['latin'] });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
-
-export const metadata: Metadata = {
-  title: "Devcard",
-  description: "The identity layer for developers",
+export const metadata = {
+  title: 'DevCard',
+  description: 'The identity layer for developers',
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
-    <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`}>
-      <body>{children}</body>
+    <html lang="en">
+      <body className={`${inter.className} antialiased`}>
+        <div className="freeTierBanner">
+          Running on free hosting — occasional slow loads are expected.
+        </div>
+        {children}
+      </body>
     </html>
   );
 }

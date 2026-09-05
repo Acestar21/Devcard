@@ -42,6 +42,15 @@ a {
   text-decoration: none;
 }
 
+.freeTierBanner {
+  background-color: #fffbeb;
+  color: #92400e;
+  text-align: center;
+  font-size: 0.75rem;
+  padding: 0.25rem 1rem;
+  border-bottom: 1px solid #fef3c7;
+}
+
 @media (prefers-color-scheme: dark) {
   html {
     color-scheme: dark;
