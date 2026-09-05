@@ -7,7 +7,7 @@ export default function HomePage() {
       <p className={styles.subtitle}>
         The identity layer for developers. Aggregate your GitHub activity in one place.
       </p>
-      <a href="http://localhost:8000/auth/github/login" className={styles.loginButton}>
+      <a href={process.env.NEXT_PUBLIC_API_URL + '/auth/github/login'} className={styles.loginButton}>
         Log in with GitHub
       </a>
     </main>

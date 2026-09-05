@@ -9,7 +9,7 @@ import styles from './page.module.css';
        const cookieStore = await cookies();
        const sessionCookie = cookieStore.get('devcard_session');
 
-       const res = await fetch(`http://localhost:8000/profiles/${username}`, {
+       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/profiles/${username}`, {
          cache: 'no-store',
          headers: sessionCookie
            ? { Cookie: `devcard_session=${sessionCookie.value}` }
@@ -115,14 +115,17 @@ export default async function ProfilePage({ params }: { params: Promise<{ userna
           <section className={styles.section}>
             <h2 className={styles.sectionTitle}>Your Badge</h2>
             <img
-              src={`http://localhost:8000/badge/${profile.username}`}
+              src={`${process.env.NEXT_PUBLIC_API_URL}/badge/${profile.username}`}
               alt="DevCard badge"
               className={styles.badgePreview}
             />
             <p className={styles.badgeInstructions}>Copy this into your README:</p>
             <code className={styles.badgeCode}>
-              {`![DevCard](http://localhost:8000/badge/${profile.username})`}
+              {`![DevCard](${process.env.NEXT_PUBLIC_API_URL}/badge/${profile.username})`}
             </code>
+            <a href={`${process.env.NEXT_PUBLIC_API_URL}/auth/github/logout`} className={styles.logoutButton}>
+            Log out
+          </a>
           </section>
         )}
 

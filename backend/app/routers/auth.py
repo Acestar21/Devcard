@@ -107,7 +107,7 @@ async def github_callback(
 
     session_token = create_session_token(user.id)
 
-    response = RedirectResponse(url=settings.frontend_url)
+    response = RedirectResponse(url=f"{settings.frontend_url}/{user.github_username}")
     response.set_cookie(
         key=SESSION_COOKIE_NAME,
         value=session_token,
@@ -120,6 +120,7 @@ async def github_callback(
 
 
 @router.get("/logout")
-def logout(response: Response):
+def logout():
+    response = RedirectResponse(url=settings.frontend_url)
     response.delete_cookie(SESSION_COOKIE_NAME)
-    return {"message": "Logged out"}
+    return response
