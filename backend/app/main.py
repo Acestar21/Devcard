@@ -9,7 +9,9 @@ app = FastAPI(title="DevCard")
 
 origins = [
     "http://localhost:3000"
+    "https://devatlas-cyan.vercel.app"
 ]
+
 
 app.add_middleware(
     CORSMiddleware,

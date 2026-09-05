@@ -113,7 +113,7 @@ async def github_callback(
         value=session_token,
         max_age=SESSION_MAX_AGE_SECONDS,
         httponly=True,       # JS on the frontend can never read this cookie
-        secure=False,        # MUST be True in production (HTTPS only)
+        secure=True,        # MUST be True in production (HTTPS only)
         samesite="lax",
     )
     return response
