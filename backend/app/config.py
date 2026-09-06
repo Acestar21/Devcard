@@ -14,6 +14,7 @@ class Settings(BaseSettings):
     fernet_key: str  # used to encrypt stored GitHub OAuth tokens at rest
 
     frontend_url: str = "http://localhost:3000"
+    internal_api_secret: str  # shared secret between Render and Vercel's API route
 
 
 settings = Settings()

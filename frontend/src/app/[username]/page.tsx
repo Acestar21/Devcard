@@ -38,7 +38,6 @@ async function fetchProfile(
 		}
 
 		const data: Profile = await res.json();
-    console.log('DEBUG deployed profile fetch:', data);
     
 		return { data, error: null, message: null };
 	} catch (e) {
@@ -166,7 +165,7 @@ export default async function ProfilePage({
 							{`![DevCard](${process.env.NEXT_PUBLIC_API_URL}/badge/${profile.username})`}
 						</code>
 						<a
-							href={`${process.env.NEXT_PUBLIC_API_URL}/auth/github/logout`}
+							href={`/api/auth/logout`}
 							className={styles.logoutButton}
 						>
 							Log out

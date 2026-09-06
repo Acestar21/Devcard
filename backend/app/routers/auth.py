@@ -1,6 +1,6 @@
 import secrets
 import httpx
-from fastapi import APIRouter, Depends, HTTPException, Response, Request
+from fastapi import APIRouter, Depends, HTTPException, Response, Request, Header
 from fastapi.responses import RedirectResponse
 from sqlmodel import Session, select
 
@@ -38,12 +38,19 @@ def github_login():
     return RedirectResponse(f"{GITHUB_AUTHORIZE_URL}?{query}")
 
 
-@router.get("/callback")
-async def github_callback(
+@router.post("/internal/exchange")
+async def github_internal_exchange(
     code: str,
     state: str,
+    x_internal_secret: str = Header(...),
     session: Session = Depends(get_session),
 ):
+    # Only Vercel's own API route should ever call this — never exposed
+    # to the browser or GitHub directly. The secret value lives only in
+    # Render's and Vercel's environment variables, never in this repo.
+    if x_internal_secret != settings.internal_api_secret:
+        raise HTTPException(status_code=403, detail="Forbidden")
+
     if state not in _pending_states:
         raise HTTPException(status_code=400, detail="Invalid or expired OAuth state")
     _pending_states.discard(state)
@@ -107,20 +114,18 @@ async def github_callback(
 
     session_token = create_session_token(user.id)
 
-    response = RedirectResponse(url=f"{settings.frontend_url}/{user.github_username}")
-    response.set_cookie(
-        key=SESSION_COOKIE_NAME,
-        value=session_token,
-        max_age=SESSION_MAX_AGE_SECONDS,
-        httponly=True,       # JS on the frontend can never read this cookie
-        secure=True,        # MUST be True in production (HTTPS only)
-        samesite="lax",
-    )
-    return response
+    # No cookie set here — this is a server-to-server response.
+    # Vercel's API route is responsible for setting the cookie on
+    # its own domain once it receives this.
+    return {
+        "session_token": session_token,
+        "github_username": user.github_username,
+    }
 
 
 @router.get("/logout")
 def logout():
-    response = RedirectResponse(url=settings.frontend_url)
-    response.delete_cookie(SESSION_COOKIE_NAME)
-    return response
+    # Kept for backward compatibility / direct testing only.
+    # The real logout flow now happens via Vercel's own API route,
+    # since that's where the session cookie actually lives.
+    return {"message": "This endpoint is no longer used by the frontend. Logout happens via /api/auth/logout on the frontend domain."}
